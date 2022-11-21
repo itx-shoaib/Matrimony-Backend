@@ -2,21 +2,40 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 
 var userProfileSchema = mongoose.Schema({
-    email: String,
+    email: {
+        type: String,
+        required: true
+    },
     personalContact: String,
     parentContact: String,
     socialLinkFb: String,
     socialLinkInsta: String,
     socialLinkTwitter: String,
     name: String,
-    profileCreated: String,
-    gender: String,
-    age: Number,
+    profileCreated: {
+        type: String,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    age: String,
     status: String,
-    religious: String,
+    religious: {
+        type: String,
+        required: true
+    },
+    otherreligion: {
+        type: String,
+        default: "N/A"
+    },
 
 
-    sect: String,
+    sect: {
+        type: String,
+        default: "N/A"
+    },
     caste: String,
     resetToken: String,
     active: Boolean,
@@ -33,15 +52,32 @@ var userProfileSchema = mongoose.Schema({
 
 
     country: String,
-    province: String,
-    city: String,
+    province: {
+        type: String,
+        default: "N/A"
+    },
+    city: {
+        type: String,
+        default: "N/A"
+    },
     house: String,
     nationality: String,
     futurePlans: String,
     professional: String,
-    jobStatus: String,
+    jobStatus: {
+        type: String,
+        default: "N/A"
+    },
     workplace: String,
-    qualification: String,
+    specialties: {
+        type: String,
+        default: "N/A"
+    },
+    qualification: {
+        type: String,
+        default: "N/A"
+    },
+    anotherqualification: String,
     institution: String,
     income: String,
 

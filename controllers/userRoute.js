@@ -46,9 +46,9 @@ const createProfile = async (req, res, next) => {
                 subject: `Confirm Your Email`, // Subject line
 
                 html: `
-<p>You requested for Create Account</p>
-<h5>Your Email is ${req.body.email} and Password is ${randomstring} click in this <a href='http://localhost:3001/verify/${tokens}'>link</a> to active Your Account if you dont sent request to Create account then iqnore this message</h5>
-`,
+    <p>You requested for Create Account</p>
+    <h5>Your Email is ${req.body.email} and Password is ${randomstring} click in this <a href='http://localhost:3001/verify/${tokens}'>link</a> to active Your Account if you dont sent request to Create account then iqnore this message</h5>
+    `,
             });
             return res.send(datatosent);
         });
