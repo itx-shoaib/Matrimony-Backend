@@ -1,49 +1,52 @@
 // const mongoose = require('mongoose');
 
-// const bookingSchema = mongoose.Schema({
-//     room:{
-//         type: String,
-//         required:true
-//     },
-//     roomid:{
+// const signupSchema = mongoose.Schema({
+//     ProfileCreatedFor: {
 //         type: String,
 //         required: true
 //     },
-//     userid:{
+//     GenderSelected: {
 //         type: String,
 //         required: true
 //     },
-//     fromdate:{
+//     name: {
 //         type: String,
 //         required: true
 //     },
-//     todate:{
+//     age: {
 //         type: String,
 //         required: true
 //     },
-//     totaldays:{
-//         type: Number,
-//         required: true
-//     },
-//     totalamount:{
-//         type: Number,
-//         required: true
-//     },
-//     transactionid:{
+//     MartialStatus: {
 //         type: String,
 //         required: true
 //     },
-//     status:{
+//     Religious: {
 //         type: String,
-//         required: true,
-//         default: "booked"
-//     }
+//         required: true
+//     },
+//     OtherReligion: {
+//         type: string,
+//         default: "N/A"
+//     },
+//     Sect: {
+//         type: String,
+//         default: "N/A"
+//     },
+//     ReligiousStatus: {
+//         type: string,
+//         required: true
+//     },
+//     Caste: {
+//         type: string,
+//         required: true
+//     },
 
 
-// },{
-//     timestamps : true,
+// }, {
+//     timestamps: true,
 // })
 
-// const bookingmodal = mongoose.model('bookings',bookingSchema)
+// const signupmodal = mongoose.model('signup', signupSchema)
 
-// module.exports = bookingmodal
+// module.exports = signupSchema
