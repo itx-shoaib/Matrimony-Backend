@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyparser = require('body-parser');
 const cors = require('cors');
-// const dbconfig = require('./db')
+const dbconfig = require('./db')
 
 const app = express();
 
@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(cors());
 app.use(bodyparser.json());
 
-const userRouter = require('./routes/userssRoute')
+const userRouter = require('./routes/userRoute')
 // const customerRouter = require('./router/customerRouter')
 // const adminRouter = require('./router/adminRouter')
 // const cartRouter = require("./router/cartRouter")
