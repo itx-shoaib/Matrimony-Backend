@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(cors());
 app.use(bodyparser.json());
 
-const userRouter = require('./routes/userRoute')
+const userRouter = require('./routes/userssRoute')
 // const customerRouter = require('./router/customerRouter')
 // const adminRouter = require('./router/adminRouter')
 // const cartRouter = require("./router/cartRouter")
