@@ -39,6 +39,7 @@ var userProfileSchema = mongoose.Schema({
     caste: String,
     resetToken: String,
     active: Boolean,
+    phoneactive: Boolean,
     password: String,
     religiousStatus: String,
     clan: String,

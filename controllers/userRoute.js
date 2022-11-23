@@ -47,7 +47,7 @@ const createProfile = async (req, res, next) => {
 
                 html: `
     <p>You requested for Create Account</p>
-    <h5>Your Email is ${req.body.email} and Password is ${randomstring} click in this <a href='http://localhost:3001/verify/${tokens}'>link</a> to active Your Account if you dont sent request to Create account then iqnore this message</h5>
+    <h5>Your Email is ${req.body.email} and Password is ${randomstring} click in this <a href='http://localhost:4200/verify/${tokens}'>link</a> to active Your Account if you dont sent request to Create account then iqnore this message</h5>
     `,
             });
             return res.send(datatosent);
@@ -71,8 +71,8 @@ const getProfile = async (req, res, next) => {
             message: "user list",
             user,
         };
-        await user.save();
-        return res.send(datatosent);
+        // await user.save();
+        return res.send(user);
     } catch (e) {
         // const error = new CustomError("fetching failed", 400);
         // next(error);
@@ -120,8 +120,27 @@ const confirmEmail = async (req, res) => {
         console.log(err);
     }
 };
+
+const otpVerification = async (req, res) => {
+    try {
+        console.log(req.body.email);
+        const user = await userProfiles.findOne({
+            email: req.body.email,
+        });
+
+        if (!user)
+            return res.status(422).json({ error: "Try again session expired" });
+        user.phoneactive = true;
+        await user.save();
+        res.json({ message: "Phone Number Approved" });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 module.exports = {
     createProfile,
+    otpVerification,
     getProfile,
     Profilelogin, confirmEmail
 };
