@@ -13,9 +13,25 @@ const AllUser = async (req, res) => {
     }
 }
 
+const DeleteUser = async (req, res) => {
+    const id = req.params.id
+    try {
+        const user = await userProfiles.findByIdAndDelete({
+            _id: id
+        })
+        res.status(200).json({
+            message: "User has been deleted"
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: err
+        })
+    }
+}
 
 
 
 module.exports = {
-    AllUser
+    AllUser,
+    DeleteUser
 };
