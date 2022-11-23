@@ -12,13 +12,11 @@ app.use(cors());
 app.use(bodyparser.json());
 
 const userRouter = require('./routes/userRoute')
-// const customerRouter = require('./router/customerRouter')
-// const adminRouter = require('./router/adminRouter')
-// const cartRouter = require("./router/cartRouter")
-// const settingRouter = require("./router/settingRouter")
-// const superRouter = require("./router/superRouter")
+const AdminRouter = require('./routes/adminRoute')
+
 
 app.use('/api/user', userRouter)
+app.use("/api/admin", AdminRouter)
 
 
 const port = process.env.PORT || 5000;
