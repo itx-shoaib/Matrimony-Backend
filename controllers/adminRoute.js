@@ -6,7 +6,7 @@ const { userProfiles } = require("../models/userProfile");
 const AllUser = async (req, res) => {
     try {
         const user = await userProfiles.find();
-        res.status(200).json({ data: user });
+        res.status(200).send(user);
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err })

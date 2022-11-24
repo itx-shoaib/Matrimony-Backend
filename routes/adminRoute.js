@@ -6,7 +6,6 @@ const router = express.Router();
 const AdminController = require('../controllers/adminRoute');
 // 3.
 router.get('/getallusers', AdminController.AllUser);
-router.post('/deleteuser/:id', AdminController.DeleteUser);
-
+router.get('/deleteuser/:id', AdminController.DeleteUser);
 // 4. 
 module.exports = router; // export to use in server.js
