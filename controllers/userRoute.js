@@ -142,6 +142,6 @@ const otpVerification = async (req, res) => {
 module.exports = {
     createProfile,
     otpVerification,
-    getProfile,
+  
     Profilelogin, confirmEmail
 };
