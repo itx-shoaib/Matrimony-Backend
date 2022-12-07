@@ -59,7 +59,8 @@ const createProfile = async (req, res, next) => {
     }
 };
 
-const getProfile = async (req, res, next) => {
+
+const get = async (req, res, next) => {
     try {
         let user = await userProfiles.find();
         if (!user) {

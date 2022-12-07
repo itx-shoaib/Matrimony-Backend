@@ -7,4 +7,6 @@ const UserController = require('../controllers/userssRoute');
 // 3.
 router.post('/Onlineuser', UserController.OnlineUser);
 // 4. 
+
+router.post('/addToFav', UserController.addToFav);
 module.exports = router; // export to use in server.js
