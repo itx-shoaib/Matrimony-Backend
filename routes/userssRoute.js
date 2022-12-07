@@ -9,4 +9,5 @@ router.post('/Onlineuser', UserController.OnlineUser);
 // 4. 
 
 router.post('/addToFav', UserController.addToFav);
+router.post('/findMatch', UserController.findMatch);
 module.exports = router; // export to use in server.js

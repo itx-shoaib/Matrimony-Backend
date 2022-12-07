@@ -89,19 +89,28 @@ const viewFav = async (req, res) => {
   }
 };
 const findMatch = async (req, res) => {
-    const { id } = req.body;
-    try {
-      let user = await userProfiles.findById(id);
-      let allUser = await userProfiles.findById();
-      return res.status(200).send(users);
-    } catch (error) {
-      return res.status(400).json({ error });
-    }
-  };
+  const { id } = req.body;
+  try {
+    let user = await userProfiles.findById(id);
+    let allUser = await userProfiles.aggregate(
+      [{
+        $match: {
+          status: user.status,
+          religiousStatus: user.religiousStatus,
+          professional: user.professional
+        }
+      }]
+    );
+    return res.status(200).send(allUser);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+};
 module.exports = {
   OnlineUser,
   addToFav,
   sentRequest,
   viewRequest,
   viewFav,
+  findMatch
 };
