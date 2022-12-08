@@ -48,10 +48,25 @@ const BlockUser = async (req, res) => {
     }
 }
 
+const ViewOnlineUsers = async (req, res) => {
+    try {
+        const OnlineUsers = await userProfiles.find({ LoginStatus: true })
+        res.status(200).json({
+            data: OnlineUsers
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "Something went wrong",
+            error: error
+        })
+    }
+}
+
 
 
 module.exports = {
     AllUser,
     DeleteUser,
-    BlockUser
+    BlockUser,
+    ViewOnlineUsers
 };

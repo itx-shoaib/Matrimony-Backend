@@ -96,6 +96,9 @@ const Profilelogin = async (req, res, next) => {
 
             id: req.user._id,
         };
+        const user = await userProfiles.findById({ _id: req.user._id })
+        user.LoginStatus = true;
+        await user.save();
         return res.status(200).send(datatoRetuen);
     } catch (e) {
         return res.status(402).send({ error: "Something Goes wrong" });

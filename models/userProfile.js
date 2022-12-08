@@ -91,6 +91,7 @@ var userProfileSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
+  LoginStatus: Boolean,
   requests: [{
     id: String, request: String
   }]
