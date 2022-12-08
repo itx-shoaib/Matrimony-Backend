@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { userProfiles } = require("../models/userProfile");
+const { userRequest } = require("../models/userRequest");
 
 // Router for getting all  users
 const AllUser = async (req, res) => {
@@ -62,11 +63,32 @@ const ViewOnlineUsers = async (req, res) => {
     }
 }
 
+const viewAllRequest = async (req, res) => {
+    try {
+        let user = await userRequest.find();
+        let ridUser;
+        let sidUser;
+        let rid = [];
+        let sid = [];
+        for (let i = 0; i < user.length; i++) {
+            rid[i] = user[i].rid;
+            sid[i] = user[i].sid;
+            ridUser = await userProfiles.find({ _id: rid[i] })
+            sidUser = await userProfiles.find({ _id: sid[i] })
+
+        }
+        return res.status(200).json({ rid: ridUser, sid: sidUser });
+    } catch (error) {
+        return res.status(400).json({ error });
+    }
+};
+
 
 
 module.exports = {
     AllUser,
     DeleteUser,
     BlockUser,
-    ViewOnlineUsers
+    ViewOnlineUsers,
+    viewAllRequest
 };

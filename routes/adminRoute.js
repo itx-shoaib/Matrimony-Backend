@@ -9,5 +9,6 @@ router.get('/getallusers', AdminController.AllUser);
 router.get('/deleteuser/:id', AdminController.DeleteUser);
 router.get('/blockuser/:id', AdminController.BlockUser)
 router.get('/ViewOnlineUsers', AdminController.ViewOnlineUsers)
+router.get('/viewAllRequest', AdminController.viewAllRequest)
 // 4. 
 module.exports = router; // export to use in server.js
