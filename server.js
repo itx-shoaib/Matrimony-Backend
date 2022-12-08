@@ -14,8 +14,9 @@ app.use(bodyparser.json());
 const userRouter = require('./routes/userRoute')
 const AdminRouter = require('./routes/adminRoute')
 
-
+const users = require('./routes/userssRoute')
 app.use('/api/user', userRouter)
+app.use('/api/users', users)
 app.use("/api/admin", AdminRouter)
 
 

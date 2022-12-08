@@ -40,26 +40,34 @@ const addToFav = async (req, res) => {
 };
 const sentRequest = async (req, res) => {
   const { id, rid, request } = req.body;
+
   try {
+ 
     if (request == "sending") {
-      let user = await new userRequest({
-        rid: rid,
-        sid: id,
-        requests: "pending",
-      });
-      user.save();
+  
+      let user = await new userRequest()
+        user.rid= rid,
+        user.sid= id,
+        user.requests= "pending",
+      
+  
+      await user.save();
+      return res.status(200).send(user);
     } else if (request == "cancel") {
-      let user = userRequest.findOneAndUpdate(
+      let user = await userRequest.findOneAndUpdate(
         { sid: id, rid: rid },
         { requests: "cancel" }
       );
+      console.log(user);
+      return res.status(200).send(user);
     } else if (request == "accept") {
-      let user = userRequest.findOneAndUpdate(
+      let user =await userRequest.findOneAndUpdate(
         { sid: id, rid: rid },
         { requests: "accept" }
       );
+      return res.status(200).send(user);
     }
-    return res.status(200).send(user);
+    
   } catch (error) {
     return res.status(400).json({ error });
   }
