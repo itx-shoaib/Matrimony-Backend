@@ -29,9 +29,29 @@ const DeleteUser = async (req, res) => {
     }
 }
 
+const BlockUser = async (req, res) => {
+    const id = req.params.id
+    try {
+        const user = await userProfiles.findById({
+            _id: id
+        })
+        user.BlockStatus = true
+        await user.save();
+        res.status(200).json({
+            message: "User has been blocked successfully"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "Something went wrong",
+            error: error
+        })
+    }
+}
+
 
 
 module.exports = {
     AllUser,
-    DeleteUser
+    DeleteUser,
+    BlockUser
 };

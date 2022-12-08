@@ -10,10 +10,10 @@ const OnlineUser = async (req, res) => {
   const { Gender } = req.body;
   try {
     if (Gender === "Male") {
-      const user = await userProfile.find({ gender: "female" });
+      const user = await userProfiles.find({ gender: "female" });
       return res.status(200).send(user);
     } else {
-      const user = await userProfile.find({ gender: "male" });
+      const user = await userProfiles.find({ gender: "male" });
       return res.status(200).send(user);
     }
   } catch (error) {
@@ -42,16 +42,16 @@ const sentRequest = async (req, res) => {
   const { id, rid, request } = req.body;
 
   try {
- 
+
     if (request == "sending") {
-  
+
       let user = await new userRequest()
-        user.rid= rid,
-        user.sid= id,
-        user.requests= "pending",
-      
-  
-      await user.save();
+      user.rid = rid,
+        user.sid = id,
+        user.requests = "pending",
+
+
+        await user.save();
       return res.status(200).send(user);
     } else if (request == "cancel") {
       let user = await userRequest.findOneAndUpdate(
@@ -61,13 +61,13 @@ const sentRequest = async (req, res) => {
       console.log(user);
       return res.status(200).send(user);
     } else if (request == "accept") {
-      let user =await userRequest.findOneAndUpdate(
+      let user = await userRequest.findOneAndUpdate(
         { sid: id, rid: rid },
         { requests: "accept" }
       );
       return res.status(200).send(user);
     }
-    
+
   } catch (error) {
     return res.status(400).json({ error });
   }

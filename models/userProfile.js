@@ -87,8 +87,12 @@ var userProfileSchema = mongoose.Schema({
   siblingsCountBrothers: Number,
   socialEconomic: String,
   familyInfo: String,
-  requests:[{
-    id:String,request:String
+  BlockStatus: {
+    type: Boolean,
+    default: false
+  },
+  requests: [{
+    id: String, request: String
   }]
 });
 userProfileSchema.methods.generateHashedPassword = async function () {
