@@ -10,10 +10,10 @@ const OnlineUser = async (req, res) => {
   const { Gender } = req.body;
   try {
     if (Gender === "Male") {
-      const user = await userProfiles.find({ gender: "female" });
+      const user = await userProfiles.find({ gender: "Female" });
       return res.status(200).send(user);
     } else {
-      const user = await userProfiles.find({ gender: "male" });
+      const user = await userProfiles.find({ gender: "Male" });
       return res.status(200).send(user);
     }
   } catch (error) {
