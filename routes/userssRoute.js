@@ -10,8 +10,9 @@ router.post('/Onlineuser', UserController.OnlineUser);
 
 router.post('/addToFav', UserController.addToFav);
 router.post('/findMatch', UserController.findMatch);
-router.post('/addToFav', UserController.addToFav);
 router.post('/viewFav', UserController.viewFav);
 router.post('/viewRequest', UserController.viewRequest);
 router.post('/sentRequest', UserController.sentRequest);
+router.post('/nearBy', UserController.nearBy);
+router.post('/viewAllRequest', UserController.viewAllRequest);
 module.exports = router; // export to use in server.js

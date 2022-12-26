@@ -20,7 +20,17 @@ const OnlineUser = async (req, res) => {
     return res.status(400).json({ error });
   }
 };
+const nearBy = async (req, res) => {
+  const { city } = req.body;
+  try {
 
+      const user = await userProfiles.find({ city: city });
+      return res.status(200).send(user);
+  
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+};
 const addToFav = async (req, res) => {
   const { uid, id } = req.body;
   try {
@@ -85,6 +95,19 @@ const viewRequest = async (req, res) => {
     return res.status(400).json({ error });
   }
 };
+const viewAllRequest = async (req, res) => {
+  const { rid } = req.body;
+  try {
+    let user = await userRequest.find({
+      rid: rid,
+
+    });
+
+    return res.status(200).send(user);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+};
 const viewFav = async (req, res) => {
   const { id } = req.body;
   try {
@@ -120,5 +143,7 @@ module.exports = {
   sentRequest,
   viewRequest,
   viewFav,
-  findMatch
+  nearBy,
+  findMatch,
+  viewAllRequest
 };

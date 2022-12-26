@@ -62,7 +62,8 @@ const createProfile = async (req, res, next) => {
 
 const get = async (req, res, next) => {
     try {
-        let user = await userProfiles.find();
+        const id=req.body.id;
+        let user = await userProfiles.findById(id);
         if (!user) {
             // const error = new CustomError("users not find", 400);
             // next(error);
