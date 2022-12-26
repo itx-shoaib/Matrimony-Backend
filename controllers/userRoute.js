@@ -81,6 +81,24 @@ const get = async (req, res, next) => {
         console.log(e)
     }
 };
+const update = async (req, res, next) => {
+    try {
+        const id=req.body.id;
+        let user = await userProfiles.findByIdAndUpdate(id,req.body);
+        if (!user) {
+            const error = new CustomError("users not find", 400);
+            next(error);
+          
+        }
+     
+        // await user.save();
+        return res.send(user);
+    } catch (e) {
+        const error = new CustomError("updation failed", 400);
+        next(error);
+     
+    }
+};
 
 const Profilelogin = async (req, res, next) => {
     try {
@@ -146,6 +164,7 @@ const otpVerification = async (req, res) => {
 module.exports = {
     createProfile,
     otpVerification,
+    update,
     get,
     Profilelogin, confirmEmail
 };

@@ -9,6 +9,7 @@ router.get('/getProfile', UserController.get);
 router.post('/createProfile', UserController.createProfile);
 router.post("/verify", UserController.confirmEmail)
 router.post("/otpverify", UserController.otpVerification)
+router.post("/userUpdate", UserController.update)
 
 // 4. 
 module.exports = router; // export to use in server.js
