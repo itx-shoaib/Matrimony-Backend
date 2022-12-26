@@ -22,6 +22,7 @@ const OnlineUser = async (req, res) => {
 };
 const nearBy = async (req, res) => {
   const { city } = req.body;
+
   try {
 
       const user = await userProfiles.find({ city: city });
@@ -98,12 +99,14 @@ const viewRequest = async (req, res) => {
 const viewAllRequest = async (req, res) => {
   const { rid } = req.body;
   try {
+ 
     let user = await userRequest.find({
       rid: rid,
 
     });
-
-    return res.status(200).send(user);
+    const ids=user.map((val)=>val.sid);
+    let users = await userProfiles.find({ _id: { $in: ids } });
+    return res.status(200).send(users);
   } catch (error) {
     return res.status(400).json({ error });
   }
