@@ -84,18 +84,20 @@ const get = async (req, res, next) => {
 const update = async (req, res, next) => {
     try {
         const id=req.body.id;
+        console.log(req.body);
         let user = await userProfiles.findByIdAndUpdate(id,req.body);
         if (!user) {
-            const error = new CustomError("users not find", 400);
-            next(error);
+            // const error = new CustomError("users not find", 400);
+            // next(error);
           
         }
      
         // await user.save();
         return res.send(user);
     } catch (e) {
-        const error = new CustomError("updation failed", 400);
-        next(error);
+        // const error = new CustomError("updation failed", 400);
+        // next(error);
+        console.log(e);
      
     }
 };
