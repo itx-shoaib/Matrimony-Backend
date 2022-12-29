@@ -25,9 +25,9 @@ const nearBy = async (req, res) => {
 
   try {
 
-      const user = await userProfiles.find({ city: city });
-      return res.status(200).send(user);
-  
+    const user = await userProfiles.find({ city: city });
+    return res.status(200).send(user);
+
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -99,12 +99,12 @@ const viewRequest = async (req, res) => {
 const viewAllRequest = async (req, res) => {
   const { rid } = req.body;
   try {
- 
+
     let user = await userRequest.find({
       rid: rid,
 
     });
-    const ids=user.map((val)=>val.sid);
+    const ids = user.map((val) => val.sid);
     let users = await userProfiles.find({ _id: { $in: ids } });
     return res.status(200).send(users);
   } catch (error) {
@@ -122,24 +122,55 @@ const viewFav = async (req, res) => {
     return res.status(400).json({ error });
   }
 };
+// const findMatch = async (req, res) => {
+//   const { id } = req.body;
+//   try {
+//     let user = await userProfiles.findById(id);
+//     let allUser = await userProfiles.aggregate(
+//       [{
+//         $match: {
+//           status: user.status,
+//           religiousStatus: user.religiousStatus,
+//           professional: user.professional
+//         }
+//       }]
+//     );
+//     return res.status(200).send(allUser);
+//   } catch (error) {
+//     return res.status(400).json({ error });
+//   }
+// };
+
 const findMatch = async (req, res) => {
-  const { id } = req.body;
-  try {
-    let user = await userProfiles.findById(id);
-    let allUser = await userProfiles.aggregate(
-      [{
-        $match: {
-          status: user.status,
-          religiousStatus: user.religiousStatus,
-          professional: user.professional
-        }
-      }]
-    );
-    return res.status(200).send(allUser);
-  } catch (error) {
-    return res.status(400).json({ error });
-  }
+  const userId = req.body.id;
+  userProfiles.findById(userId, (err, user) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    // Find profiles with at least 5 matching fields and exclude the logged in user
+    userProfiles.find({
+      _id: { $ne: userId },
+      gender: { $in: ['Male', 'Female'].filter(g => g !== user.gender) },
+      $and: [
+        { age: { $gte: parseInt(user.age) - 2, $lte: parseInt(user.age) + 2 } },
+        { status: user.status },
+        { religious: user.religious },
+        { otherreligion: user.otherreligion },
+        { sect: user.sect },
+        { professional: user.professional },
+        // { income: user.income },
+        // Other fields here
+      ],
+    }, (err, profiles) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      return res.send(profiles);
+    });
+  });
 };
+
+
 module.exports = {
   OnlineUser,
   addToFav,
