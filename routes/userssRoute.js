@@ -15,4 +15,5 @@ router.post('/viewRequest', UserController.viewRequest);
 router.post('/sentRequest', UserController.sentRequest);
 router.post('/nearBy', UserController.nearBy);
 router.post('/viewAllRequest', UserController.viewAllRequest);
+router.post('/search', UserController.search);
 module.exports = router; // export to use in server.js

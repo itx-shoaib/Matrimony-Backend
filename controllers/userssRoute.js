@@ -170,6 +170,25 @@ const findMatch = async (req, res) => {
   });
 };
 
+const search = async (req, res) => {
+  // Extract the search query from the request body
+  const { gender, max_age, min_age, country, userId } = req.body;
+
+  // Use the find method to search for documents in the collection
+  userProfiles.find({
+    _id: { $ne: userId },
+    gender: gender,
+    age: { $gte: parseInt(min_age), $lte: parseInt(max_age) },
+    country: country
+  }, (err, users) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    // Return the search results
+    return res.send(users);
+  });
+}
+
 
 module.exports = {
   OnlineUser,
@@ -179,5 +198,6 @@ module.exports = {
   viewFav,
   nearBy,
   findMatch,
-  viewAllRequest
+  viewAllRequest,
+  search
 };
