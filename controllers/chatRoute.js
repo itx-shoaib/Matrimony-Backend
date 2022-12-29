@@ -13,8 +13,9 @@ const postchat = async (req, res) => {
       chats.messages.push({
         sender: senderId,
         message: message,
-        total_messages: chats.total_messages + 1,
+      
       });
+      chats.total_messages= chats.total_messages + 1,
       await chats.save();
       res.status(200).send(chats);
     } else {
@@ -25,7 +26,7 @@ const postchat = async (req, res) => {
       chats.messages.push({
         sender: senderId,
         message: message,
-        total_messages: chats.total_messages + 1,
+     
       });
       console.log(chats);
       await chats.save();
