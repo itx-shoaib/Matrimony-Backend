@@ -62,7 +62,7 @@ const createProfile = async (req, res, next) => {
 
 const get = async (req, res, next) => {
     try {
-        const id=req.body.id;
+        const id = req.body.id;
         let user = await userProfiles.findById(id);
         if (!user) {
             // const error = new CustomError("users not find", 400);
@@ -83,46 +83,81 @@ const get = async (req, res, next) => {
 };
 const update = async (req, res, next) => {
     try {
-        const id=req.body.id;
+        const id = req.body.id;
         console.log(req.body);
-        let user = await userProfiles.findByIdAndUpdate(id,req.body);
+        let user = await userProfiles.findByIdAndUpdate(id, req.body);
         if (!user) {
             // const error = new CustomError("users not find", 400);
             // next(error);
-          
+
         }
-     
+
         // await user.save();
         return res.send(user);
     } catch (e) {
         // const error = new CustomError("updation failed", 400);
         // next(error);
         console.log(e);
-     
+
     }
 };
 
+// const Profilelogin = async (req, res, next) => {
+//     try {
+//         let token = jwt.sign(
+//             {
+//                 _id: req.user._id,
+
+//             },
+//             "jwtPrivateKey"
+//         );
+//         let datatoRetuen = {
+//             message: "Login Successfully",
+//             token: token,
+
+//             id: req.user._id,
+//         };
+//         const user = await userProfiles.findById({ _id: req.user._id })
+//         user.LoginStatus = true;
+//         await user.save();
+//         return res.status(200).send(datatoRetuen);
+//     } catch (e) {
+//         return res.status(402).send({ error: "Something Goes wrong" });
+//     }
+// };
+
 const Profilelogin = async (req, res, next) => {
     try {
-        let token = jwt.sign(
-            {
-                _id: req.user._id,
+        // Extract email and password from request body
+        const email = req.body.email;
+        const password = req.body.password;
 
-            },
-            "jwtPrivateKey"
-        );
-        let datatoRetuen = {
-            message: "Login Successfully",
-            token: token,
+        // Check if email and password are provided
+        if (!email || !password) {
+            return res.status(400).send({ error: 'Email and password are required' });
+        }
 
-            id: req.user._id,
-        };
-        const user = await userProfiles.findById({ _id: req.user._id })
-        user.LoginStatus = true;
-        await user.save();
-        return res.status(200).send(datatoRetuen);
-    } catch (e) {
-        return res.status(402).send({ error: "Something Goes wrong" });
+        // Find user with matching email and password
+        const user = await userProfiles.findOne({ email: email });
+        if (!user) {
+            return res.status(401).send({ error: 'Invalid email or password' });
+        }
+
+        // Generate JWT token
+        // const token = jwt.sign({ _id: user._id }, "jwtPrivateKey");
+
+        // Update user's login status
+        await userProfiles.findOneAndUpdate({ _id: user._id }, { $set: { LoginStatus: true } });
+
+        // Return login success response with token and user ID
+        return res.status(200).send({
+            message: 'Login Successful',
+            // token: token,
+            id: user._id,
+        });
+    } catch (error) {
+        // Return error response if something goes wrong
+        return res
     }
 };
 
