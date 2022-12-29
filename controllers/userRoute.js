@@ -212,11 +212,24 @@ const blockUser = async (req, res) => {
     });
 }
 
+const changeLoginStatus = async (req, res) => {
+    const { userId, LoginStatus } = req.body;  // Extract the user ID and block status from the request body
+
+    // Find the user document and update the "BlockStatus" field
+    userProfiles.findByIdAndUpdate(userId, { LoginStatus: LoginStatus }, { new: true }, (err, user) => {
+        if (err) {
+            return res.status(500).send(err);  // Return an error if there was a problem updating the document
+        }
+        return res.send(user);  // Return the updated user document
+    });
+}
+
 module.exports = {
     createProfile,
     otpVerification,
     update,
     get,
     Profilelogin, confirmEmail,
-    blockUser
+    blockUser,
+    changeLoginStatus
 };
