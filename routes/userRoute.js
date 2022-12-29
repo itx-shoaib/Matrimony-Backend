@@ -11,6 +11,7 @@ router.post("/verify", UserController.confirmEmail)
 router.post("/otpverify", UserController.otpVerification)
 router.post("/userUpdate", UserController.update)
 router.post("/Profilelogin", UserController.Profilelogin)
+router.post("/blockUser", UserController.blockUser)
 
 // 4. 
 module.exports = router; // export to use in server.js

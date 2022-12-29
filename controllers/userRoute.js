@@ -199,10 +199,24 @@ const otpVerification = async (req, res) => {
     }
 };
 
+const blockUser = async (req, res) => {
+    const { userId, loginId } = req.body;  // Extract the user ID from the request body
+    const blockedUser = { blockedUserId: userId, UserId: loginId };  // Create an object with the user ID to be added to the "block" array
+
+    // Find the user document and update the "block" array by pushing the blocked user object
+    userProfiles.findByIdAndUpdate(loginId, { $push: { Block: userId } }, { new: true }, (err, user) => {
+        if (err) {
+            return res.status(500).send(err);  // Return an error if there was a problem updating the document
+        }
+        return res.send(user);  // Return the updated user document
+    });
+}
+
 module.exports = {
     createProfile,
     otpVerification,
     update,
     get,
-    Profilelogin, confirmEmail
+    Profilelogin, confirmEmail,
+    blockUser
 };

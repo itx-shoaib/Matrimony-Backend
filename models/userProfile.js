@@ -21,6 +21,7 @@ var userProfileSchema = mongoose.Schema({
     required: true,
   },
   favourites: [],
+  Block: [],
   age: String,
   status: String,
   religious: {
