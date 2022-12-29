@@ -77,6 +77,26 @@ const getChatGroup = async (req, res) => {
       res.status(500).json({ error: err });
     }
   };
+
+
+  const getAlluserChat = async (req, res) => {
+    try {
+      const {senderId} = req.body;
+      const chats = await chat.find({members:{ $all : [senderId] }});
+      if (chats) {
+        res.status(200).send(chats);
+      
+      } else {
+        
+        res.status(400).send({error:"no chat found"});
+
+      }
+      
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: err });
+    }
+  };
 module.exports = {
-    getAllChat,getChatGroup,postchat
+    getAllChat,getChatGroup,postchat,getAlluserChat
 };
