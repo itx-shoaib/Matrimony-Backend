@@ -17,6 +17,8 @@ router.post('/viewRequest', UserController.viewRequest);
 router.post('/sentRequest', UserController.sentRequest);
 router.post('/nearBy', UserController.nearBy);
 router.post('/viewAllRequest', UserController.viewAllRequest);
+
+router.post('/search', UserController.search);
 router.post('/getAllChat', chat.getAllChat);
 router.post('/getChatGroup', chat.getChatGroup);
 router.post('/postchat', chat.postchat);
