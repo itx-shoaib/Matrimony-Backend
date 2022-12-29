@@ -154,6 +154,7 @@ const Profilelogin = async (req, res, next) => {
             message: 'Login Successful',
             // token: token,
             id: user._id,
+            user: user
         });
     } catch (error) {
         // Return error response if something goes wrong
