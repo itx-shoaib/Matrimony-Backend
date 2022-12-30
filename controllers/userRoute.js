@@ -224,6 +224,23 @@ const changeLoginStatus = async (req, res) => {
     });
 }
 
+const showBlockedUsers = async (req, res) => {
+    try {
+
+        const userId = req.body.id;
+        const user = await userProfiles.findById(userId);
+        const blockedUsers = await userProfiles.find({ _id: { $in: user.Block } });
+
+        // Return the blocked user objects in the response
+        res.status(200).json({ data: blockedUsers });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Something went wrong',
+            error: error
+        });
+    }
+}
+
 module.exports = {
     createProfile,
     otpVerification,
@@ -231,5 +248,6 @@ module.exports = {
     get,
     Profilelogin, confirmEmail,
     blockUser,
-    changeLoginStatus
+    changeLoginStatus,
+    showBlockedUsers
 };
