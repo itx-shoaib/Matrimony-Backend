@@ -14,6 +14,7 @@ router.post("/Profilelogin", UserController.Profilelogin)
 router.post("/blockUser", UserController.blockUser)
 router.post("/changeLoginStatus", UserController.changeLoginStatus)
 router.post("/showBlockedUsers", UserController.showBlockedUsers)
+router.post("/unblockUser", UserController.unblockUser)
 
 // 4. 
 module.exports = router; // export to use in server.js
