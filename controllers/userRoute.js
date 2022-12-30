@@ -267,6 +267,15 @@ const unblockUser = async (req, res) => {
 
 }
 
+const payment = async (req, res) => {
+    // Get the payment amount from the request body
+    const amount = req.body.amount;
+
+    // Redirect to WhatsApp with the payment amount
+    res.send(`https://api.whatsapp.com/send?phone=<YOUR_PHONE_NUMBER>&text=I%20would%20like%20to%20make%20a%20payment%20of%20${amount}}`)
+    // res.redirect(`https://wa.me?text=I%20would%20like%20to%20make%20a%20payment%20of%20${amount}`);
+}
+
 module.exports = {
     createProfile,
     otpVerification,
@@ -276,5 +285,6 @@ module.exports = {
     blockUser,
     changeLoginStatus,
     showBlockedUsers,
-    unblockUser
+    unblockUser,
+    payment
 };
