@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { userProfiles } = require("../models/userProfile");
 const { userRequest } = require("../models/userRequest");
+const { report } = require("../models/report");
 
 // Router for getting all  users
 const AllUser = async (req, res) => {
@@ -83,6 +84,27 @@ const viewAllRequest = async (req, res) => {
     }
 };
 
+const generateReport = async (req, res) => {
+    const complainerId = req.body.complainerId;
+    const complainedId = req.body.complainedId;
+    const reportText = req.body.reportText;
+
+    try {
+        const newReport = new report({
+            complainerId: complainerId,
+            complainedId: complainedId,
+            report: reportText
+        });
+        await newReport.save();
+        res.status(201).json({ message: 'Report generated successfully' });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "something went wrong",
+            error: error
+        })
+    }
+}
 
 
 module.exports = {
@@ -90,5 +112,6 @@ module.exports = {
     DeleteUser,
     BlockUser,
     ViewOnlineUsers,
-    viewAllRequest
+    viewAllRequest,
+    generateReport
 };
