@@ -149,7 +149,7 @@ const findMatch = async (req, res) => {
     }
     // Find profiles with at least 5 matching fields and exclude the logged in user
     userProfiles.find({
-      _id: { $ne: userId },
+      _id: { $ne: userId, $nin: user.Block },
       gender: { $in: ['Male', 'Female'].filter(g => g !== user.gender) },
       $and: [
         { age: { $gte: parseInt(user.age) - 2, $lte: parseInt(user.age) + 2 } },
