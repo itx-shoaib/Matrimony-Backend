@@ -8,6 +8,7 @@ var chatSchema = mongoose.Schema({
         members: [],
         messages: [
           {
+            name:String,
              sender: String, 
              message: String, 
           

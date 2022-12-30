@@ -7,12 +7,14 @@ const { chat } = require("../models/chat");
 // Router for getting all  users
 const postchat = async (req, res) => {
   try {
-    const { id, senderId, receiverId, message } = req.body;
+    const { id, name,senderId, receiverId, message } = req.body;
+    console.log(id);
     const chats = await chat.findById(id);
     if (chats) {
       chats.messages.push({
         sender: senderId,
         message: message,
+        name,
       
       });
       chats.total_messages= chats.total_messages + 1,
@@ -26,6 +28,7 @@ const postchat = async (req, res) => {
       chats.messages.push({
         sender: senderId,
         message: message,
+        name,
      
       });
       console.log(chats);
@@ -50,7 +53,7 @@ const getChatGroup = async (req, res) => {
       
       } else {
         
-        res.status(400).send({error:"no chat found"});
+        res.status(200).send({chats:{}});
 
       }
       
@@ -82,7 +85,9 @@ const getChatGroup = async (req, res) => {
   const getAlluserChat = async (req, res) => {
     try {
       const {senderId} = req.body;
+      console.log(senderId);
       const chats = await chat.find({members:{ $all : [senderId] }});
+       
       if (chats) {
         res.status(200).send(chats);
       
