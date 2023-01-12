@@ -17,6 +17,7 @@ router.post("/viewRequest", UserController.viewRequest);
 router.post("/sentRequest", UserController.sentRequest);
 router.post("/nearBy", UserController.nearBy);
 router.post("/viewAllRequest", UserController.viewAllRequest);
+router.get('/latest/:id',UserController.latest),
 
 router.post("/search", UserController.search);
 router.post("/getAllChat", chat.getAllChat);

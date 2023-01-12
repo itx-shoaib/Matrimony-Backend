@@ -2,8 +2,6 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 
 var gallerySchema = mongoose.Schema({
-
-       
      image:String,
      private:Boolean,
      userId:String,

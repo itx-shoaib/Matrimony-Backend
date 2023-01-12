@@ -6,6 +6,7 @@ var userProfileSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  image:String,
   personalContact: String,
   parentContact: String,
   socialLinkFb: String,
@@ -80,7 +81,14 @@ var userProfileSchema = mongoose.Schema({
   anotherqualification: String,
   institution: String,
   income: String,
-
+  hideName:{
+    type: Boolean,
+    default: false
+  },
+  lockDetails:{
+    type: Boolean,
+    default: false
+  },
   professionalInfo: String,
   fatherOccuption: String,
   motherOccuption: String,

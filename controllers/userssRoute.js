@@ -187,10 +187,21 @@ const search = async (req, res) => {
     }
   );
 };
-
+const latest = async (req,res)=>{
+  const id = req.params.id;
+  const user = await userProfiles.findById(id);
+  console.log(user);
+  if(user.gender === "Male"){
+    const userProfile = await userProfiles.find({ gender: "Female" }).sort({$natural:-1});
+    return res.status(200).send(userProfile);
+  }else {
+    const user = await userProfiles.find({ gender: "Male" }).sort({$natural:-1});
+    return res.status(200).send(user);
+  } 
+};
 module.exports = {
   OnlineUser,
-  addToFav,
+  addToFav,latest,
   sentRequest,
   viewRequest,
   viewFav,

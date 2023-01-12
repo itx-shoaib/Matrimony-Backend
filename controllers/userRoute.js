@@ -62,12 +62,12 @@ const createProfile = async (req, res, next) => {
 
 const get = async (req, res, next) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
     let user = await userProfiles.findById(id);
     if (!user) {
       // const error = new CustomError("users not find", 400);
       // next(error);
-      console.log("users not find");
+      console.log("users not find")
     }
     let datatosent = {
       message: "user list",
@@ -78,9 +78,31 @@ const get = async (req, res, next) => {
   } catch (e) {
     // const error = new CustomError("fetching failed", 400);
     // next(error);
-    console.log(e);
+    console.log(e)
   }
 };
+// const get = async (req, res, next) => {
+//   try {
+//     const id = req.body.id;
+//     let user = await userProfiles.findById(id);
+//     if (!user) {
+//       // const error = new CustomError("users not find", 400);
+//       // next(error);
+//       console.log("users not find");
+//     }
+//     let datatosent = {
+//       message: "user list",
+//       user,
+//     };
+//     // await user.save();
+//     return res.send(user);
+//   } catch (e) {
+//     // const error = new CustomError("fetching failed", 400);
+//     // next(error);
+//     console.log(e);
+//   }
+// };
+
 const update = async (req, res, next) => {
   try {
     const id = req.body.id;
@@ -292,10 +314,9 @@ const payment = async (req, res) => {
 
 const uploadAllImage = async (req, res, next) => {
   try {
-    const { userId, private } = req.body;
-
+    const userId = req.params.id;
     let subcategory = await new gallery();
-    subcategory.image = req.file.path;
+    subcategory.image = req.files.path;
     subcategory.userId = userId;
     subcategory.private = private;
     await subcategory.save();
@@ -348,12 +369,15 @@ const changeAllSttaus = async (req, res, next) => {
 };
 const uploadProfileImage = async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    const  userId = req.params.id;
+    const image = req.body;
+    // const
+    console.log(image);
+    console.log(userId);
     let profile = await userProfiles.findById(userId);
-
+    console.log(profile);
     profile.image = req.file.path;
     await profile.save();
-
     let datatosent = {
       message: "image uploaded",
       profile,
@@ -363,7 +387,6 @@ const uploadProfileImage = async (req, res, next) => {
     return res.send(e);
   }
 };
-
 const showAllImages = async (req, res, next) => {
   try {
     const { userId } = req.body;
@@ -413,14 +436,77 @@ const showPublicImages = async (req, res, next) => {
       return res.send(e);
     }
   };
+  const addToPackage = async (req, res) => {
+    const package = new Package();
+    const  uid  = req.body.packageId._id;
+    const id = req.params.id;
+    package._id = req.body.packageId._id;
+    package.description = req.body.packageId.description;
+    package.image = req.body.packageId.image;
+    package.price = req.body.packageId.price;
+    package.name = req.body.packageId.name;
+    try {
+        // const user = await userProfiles.findById(id);
+        // console.log(user.package);
+        const query = { 'id': id };
+        const update = {
+            $push: {
+                package: {
+                    $each: [package]
+                }
+            }
+        };
+        const user = await userProfiles.findOneAndUpdate(query, update, function(err, doc) {
+            if (err){
+                return res.status(400).json({ err });
+            }else{
+                return res.status(200).send(user);
+
+            }
+        });
+    } catch (error) {
+        return res.status(400).json({ error });
+    }
+};
+const getallUsers = async (req, res, next) => {
+  try {
+      let user = await userProfiles.find();
+      if (!user) {
+          console.log("users not find")
+      }
+      let datatosent = {
+          message: "user list",
+          user,
+      };
+      return res.send(user);
+  } catch (e) {
+      console.log(e)
+  }
+};
+const userUpdate = async (req, res, next) => {
+  const body = req.body;
+  console.log(body);
+  let userUpdate;
+  userUpdate = {...body};
+  await userProfiles.findByIdAndUpdate(req.params.id,userUpdate,
+      (err, data) => {
+        if (!err) {
+          res.send(data);
+        } else {
+          return next(err);
+        }
+      }).clone();
+};
+
 module.exports = {
   createProfile,
   otpVerification,
   update,
-  get,
+  get,getallUsers,
   showOverallPublicImages,
   showPublicImages,
   showAllImages,
+  userUpdate,
   changeSingleImageStatus,
   uploadAllImage,
   Profilelogin,
@@ -432,4 +518,5 @@ module.exports = {
   unblockUser,
   payment,
   uploadProfileImage,
+  addToPackage
 };
