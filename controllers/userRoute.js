@@ -1,6 +1,7 @@
 const express = require("express");
 // const { CustomError } = require("../lib/error");
 const { userProfiles } = require("../models/userProfile");
+const path = require('path');
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const { gallery } = require("../models/gallery");
@@ -75,6 +76,7 @@ const get = async (req, res, next) => {
     };
     // await user.save();
     return res.send(user);
+    console.log(user);
   } catch (e) {
     // const error = new CustomError("fetching failed", 400);
     // next(error);
@@ -312,23 +314,6 @@ const payment = async (req, res) => {
   // res.redirect(`https://wa.me?text=I%20would%20like%20to%20make%20a%20payment%20of%20${amount}`);
 };
 
-const uploadAllImage = async (req, res, next) => {
-  try {
-    const userId = req.params.id;
-    let subcategory = await new gallery();
-    subcategory.image = req.files.path;
-    subcategory.userId = userId;
-    subcategory.private = private;
-    await subcategory.save();
-    let datatosent = {
-      message: "image uploaded",
-      subcategory,
-    };
-    return res.send(datatosent);
-  } catch (e) {
-    return res.send(e);
-  }
-};
 
 const changeSingleImageStatus = async (req, res, next) => {
   try {
@@ -370,12 +355,8 @@ const changeAllSttaus = async (req, res, next) => {
 const uploadProfileImage = async (req, res, next) => {
   try {
     const  userId = req.params.id;
-    const image = req.body;
-    // const
-    console.log(image);
     console.log(userId);
     let profile = await userProfiles.findById(userId);
-    console.log(profile);
     profile.image = req.file.path;
     await profile.save();
     let datatosent = {
@@ -387,18 +368,39 @@ const uploadProfileImage = async (req, res, next) => {
     return res.send(e);
   }
 };
+const uploadAllImage = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const subcategory =  new gallery();
+    req.files.forEach(file=>{
+      subcategory.image.push(file.path)
+    })
+    subcategory.userId = userId;
+    subcategory.private = true;
+    console.log(subcategory);
+    await subcategory.save();
+    let datatosent = {
+      message: "image uploaded",
+      subcategory,
+    };
+    return res.send(datatosent);
+  } catch (e) {
+    return res.send(e);
+  }
+};
+
 const showAllImages = async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params.id;
 
     let gal = await gallery.find({ userId: userId });
 
-    let datatosent = {
-      message: "AllImages",
-      gal,
-    };
-    console.log(datatosent);
-    return res.send(datatosent);
+    // let datatosent = {
+    //   message: "AllImages",
+    //   gal,
+    // };
+    console.log(gal);
+    return res.send(gal);
   } catch (e) {
     return res.send(e);
   }
@@ -406,9 +408,7 @@ const showAllImages = async (req, res, next) => {
 const showPublicImages = async (req, res, next) => {
     try {
       const { userId } = req.body;
-  
       let gal = await gallery.find({ userId: userId ,private:false});
-  
       let datatosent = {
         message: "All Images",
         gal,

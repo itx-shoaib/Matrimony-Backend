@@ -6,7 +6,9 @@ var userProfileSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  image:String,
+  image:{
+    type:String,
+  },
   personalContact: String,
   parentContact: String,
   socialLinkFb: String,
@@ -96,10 +98,7 @@ var userProfileSchema = mongoose.Schema({
   siblingsCountBrothers: Number,
   socialEconomic: String,
   familyInfo: String,
-  BlockStatus: {
-    type: Boolean,
-    default: false
-  },
+  BlockStatus: {type: Boolean, default: false},
   LoginStatus: Boolean,
   requests: [{
     id: String, request: String
