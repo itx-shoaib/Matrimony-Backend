@@ -9,6 +9,8 @@ var userProfileSchema = mongoose.Schema({
   image:{
     type:String,
   },
+  connect:Number,
+  package:String,
   personalContact: String,
   parentContact: String,
   socialLinkFb: String,

@@ -24,12 +24,24 @@ router.post("/uploadProfileImage", UserController.changeSingleImageStatus);
 router.post("/ProfileImage/:id", upload.single('image'),UserController.uploadProfileImage);
 router.post("/upload", upload.single("image"),UserController.uploadProfileImage);
 router.get("/showImages/:id",UserController.showAllImages);
+
+// router.delete("/deleteGallary/:id",UserController.deleteGallary);
+
 router.post("/showPublicImages",UserController.showPublicImages);
 router.post("/showOverallPublicImages",UserController.showOverallPublicImages);
 
-router.put('/updatePackage/:id', UserController.addToPackage);
+// router.post("/whatsapp",UserController.whatsApp);
+
+router.put('/assignPackageToUser/:id', UserController.assignPackageToUser);
+router.post('/addToPackage', UserController.addToPackage);
+router.get('/getPackage', UserController.getPackage);
+router.delete('/deletePackage/:id',UserController.deletePackage);
+router.get('/getPackageById/:id', UserController.getPackageById);
+
+
 router.get('/getAllProfile', UserController.getallUsers);
 router.put('/updateProfile/:id', UserController.userUpdate);
+router.post('/connectsDecrement/:id',UserController.connectsDecrement);
 
 
 

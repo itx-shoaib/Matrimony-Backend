@@ -1,6 +1,7 @@
 const express = require("express");
-// const { CustomError } = require("../lib/error");
+var mongoose = require("mongoose");
 const { userProfiles } = require("../models/userProfile");
+const { Package } = require("../models/package.model");
 const path = require('path');
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
@@ -21,8 +22,7 @@ const createProfile = async (req, res, next) => {
       var randomstring = Math.random().toString(36).slice(-8);
       user.password = randomstring;
       if (!user) {
-        // const error = new CustomError("user is not created", 400);
-        // next(error);
+
         console.log("user is not created");
       }
       let datatosent = {
@@ -55,8 +55,7 @@ const createProfile = async (req, res, next) => {
       return res.send(datatosent);
     });
   } catch (e) {
-    // const error = new CustomError("Creation failed", 400);
-    // next(error);
+
     console.log(e);
   }
 };
@@ -66,44 +65,35 @@ const get = async (req, res, next) => {
     const id = req.params.id;
     let user = await userProfiles.findById(id);
     if (!user) {
-      // const error = new CustomError("users not find", 400);
-      // next(error);
       console.log("users not find")
     }
     let datatosent = {
       message: "user list",
       user,
     };
-    // await user.save();
     return res.send(user);
     console.log(user);
   } catch (e) {
-    // const error = new CustomError("fetching failed", 400);
-    // next(error);
     console.log(e)
   }
 };
-// const get = async (req, res, next) => {
-//   try {
-//     const id = req.body.id;
-//     let user = await userProfiles.findById(id);
-//     if (!user) {
-//       // const error = new CustomError("users not find", 400);
-//       // next(error);
-//       console.log("users not find");
-//     }
-//     let datatosent = {
-//       message: "user list",
-//       user,
-//     };
-//     // await user.save();
-//     return res.send(user);
-//   } catch (e) {
-//     // const error = new CustomError("fetching failed", 400);
-//     // next(error);
-//     console.log(e);
-//   }
-// };
+const getPackageById = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    let package = await Package.findById(id);
+    if (!user) {
+      console.log("Package not find")
+    }
+    let datatosent = {
+      message: "package list",
+      package,
+    };
+    return res.send(package);
+    console.log(package);
+  } catch (e) {
+    console.log(e)
+  }
+};
 
 const update = async (req, res, next) => {
   try {
@@ -111,43 +101,14 @@ const update = async (req, res, next) => {
     console.log(req.body);
     let user = await userProfiles.findByIdAndUpdate(id, req.body);
     if (!user) {
-      // const error = new CustomError("users not find", 400);
-      // next(error);
     }
 
-    // await user.save();
     return res.send(user);
   } catch (e) {
-    // const error = new CustomError("updation failed", 400);
-    // next(error);
+
     console.log(e);
   }
 };
-
-// const Profilelogin = async (req, res, next) => {
-//     try {
-//         let token = jwt.sign(
-//             {
-//                 _id: req.user._id,
-
-//             },
-//             "jwtPrivateKey"
-//         );
-//         let datatoRetuen = {
-//             message: "Login Successfully",
-//             token: token,
-
-//             id: req.user._id,
-//         };
-//         const user = await userProfiles.findById({ _id: req.user._id })
-//         user.LoginStatus = true;
-//         await user.save();
-//         return res.status(200).send(datatoRetuen);
-//     } catch (e) {
-//         return res.status(402).send({ error: "Something Goes wrong" });
-//     }
-// };
-
 const Profilelogin = async (req, res, next) => {
   try {
     // Extract email and password from request body
@@ -370,10 +331,21 @@ const uploadProfileImage = async (req, res, next) => {
 };
 const uploadAllImage = async (req, res, next) => {
   try {
+    // console.log(req.body);
+    // return
     const userId = req.params.id;
+    const allfiles = req.body;
+    let gal = await gallery.find({ userId: userId });
+    if(gal){
+      console.log(gal+"gallary by User ID");
+      gal.push(allfiles)
+      await gal.save();
+    }
     const subcategory =  new gallery();
-    req.files.forEach(file=>{
-      subcategory.image.push(file.path)
+    console.log(req.body[0]);
+
+    allfiles.forEach(file =>{
+       subcategory.image.push(file);
     })
     subcategory.userId = userId;
     subcategory.private = true;
@@ -384,6 +356,7 @@ const uploadAllImage = async (req, res, next) => {
       subcategory,
     };
     return res.send(datatosent);
+    console.log(datatosent);
   } catch (e) {
     return res.send(e);
   }
@@ -395,16 +368,28 @@ const showAllImages = async (req, res, next) => {
 
     let gal = await gallery.find({ userId: userId });
 
-    // let datatosent = {
-    //   message: "AllImages",
-    //   gal,
-    // };
     console.log(gal);
-    return res.send(gal);
+     await res.send(gal);
   } catch (e) {
     return res.send(e);
   }
 };
+// const deleteGallary = async (req, res, next) => {
+//     const id = req.params.id
+//     try {
+//       const gallary = await gallery.findByIdAndDelete({
+//         _id: id
+//       })
+//       res.status(200).json({
+//         message: "gallary has been deleted"
+//       })
+//     } catch (error) {
+//       res.status(500).json({
+//         error: err
+//       })
+//     }
+// };
+
 const showPublicImages = async (req, res, next) => {
     try {
       const { userId } = req.body;
@@ -422,10 +407,7 @@ const showPublicImages = async (req, res, next) => {
 
   const showOverallPublicImages = async (req, res, next) => {
     try {
-    
-  
       let gal = await gallery.find();
-  
       let datatosent = {
         message: "All Images",
         gal,
@@ -436,36 +418,45 @@ const showPublicImages = async (req, res, next) => {
       return res.send(e);
     }
   };
-  const addToPackage = async (req, res) => {
-    const package = new Package();
-    const  uid  = req.body.packageId._id;
-    const id = req.params.id;
-    package._id = req.body.packageId._id;
-    package.description = req.body.packageId.description;
-    package.image = req.body.packageId.image;
-    package.price = req.body.packageId.price;
-    package.name = req.body.packageId.name;
-    try {
-        // const user = await userProfiles.findById(id);
-        // console.log(user.package);
-        const query = { 'id': id };
-        const update = {
-            $push: {
-                package: {
-                    $each: [package]
-                }
-            }
-        };
-        const user = await userProfiles.findOneAndUpdate(query, update, function(err, doc) {
-            if (err){
-                return res.status(400).json({ err });
-            }else{
-                return res.status(200).send(user);
+const addToPackage = async (req, res) => {
+  const package = new Package();
+  const body = req.body;
+  console.log(body.image);
 
-            }
-        });
-    } catch (error) {
-        return res.status(400).json({ error });
+  // const img = req.file.filename;
+  package.name = body.name;
+  package.price = body.price;
+  package.description = body.description;
+  package.image = body.image;
+  package.connect = body.connect;
+  await package.save((err, doc) =>{
+    if(!err)
+      res.json(doc);
+    else{
+      return next(err);
+    }
+  })
+};
+const getPackage = async (req,res)=>{
+  let package = await Package.find();
+  return res.send(package)};
+
+  const assignPackageToUser = async (req, res) => {
+    try {
+      const  userId = req.params.id;
+      const  uid  = req.body.packageId._id;
+      console.log(userId);
+      let profile = await userProfiles.findById(userId);
+      profile.package = uid;
+      profile.connect = req.body.packageId.connect
+      await profile.save();
+      let datatosent = {
+        message: "Assign Package",
+        profile,
+      };
+      return res.send(datatosent);
+    } catch (e) {
+      return res.send(e);
     }
 };
 const getallUsers = async (req, res, next) => {
@@ -497,7 +488,56 @@ const userUpdate = async (req, res, next) => {
         }
       }).clone();
 };
-
+const deletePackage  = async (req,res)=>{
+  const id = req.params.id
+  try {
+    const package = await Package.findByIdAndDelete({
+      _id: id
+    })
+    res.status(200).json({
+      message: "User has been deleted"
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: err
+    })
+  }
+};
+const connectsDecrement = async (req,res)=>{
+  try {
+    const  userId = req.body._id ;
+    console.log(userId);
+    let profile = await userProfiles.findById(userId);
+    profile.connect = profile.connect - 4
+    if(profile.connect < 4){
+      profile.package = "";
+    }
+    await profile.save();
+    console.log(profile);
+    let datatosent = {
+      message: "decrement connect",
+      profile,
+    };
+    return res.send(datatosent);
+  } catch (e) {
+    return res.send(e);
+  }
+  // try {
+  //   const  userId = req.params.id;
+  //   console.log(userId);
+  //   const user = await userProfiles.findById(userId);
+  //   let profile = await userProfiles.findOneAndUpdate(userId,{ $inc: { connect: -4 } } );
+  //   console.log(profile)
+  //   await profile.save();
+  //   let datatosent = {
+  //     message: "update connect",
+  //     profile,
+  //   };
+  //   return res.send(datatosent);
+  // } catch (e) {
+  //   return res.send(e);
+  // }
+};
 module.exports = {
   createProfile,
   otpVerification,
@@ -518,5 +558,7 @@ module.exports = {
   unblockUser,
   payment,
   uploadProfileImage,
-  addToPackage
+  addToPackage,getPackage,assignPackageToUser,deletePackage,getPackageById,
+  connectsDecrement
+  // ,deleteGallary
 };
