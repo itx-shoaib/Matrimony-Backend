@@ -7,14 +7,14 @@ const { chat } = require("../models/chat");
 // Router for getting all  users
 const postchat = async (req, res) => {
   try {
-    const { id, name,senderId, receiverId, message } = req.body;
+    const { id, name,senderId, profile,receiverId, message } = req.body;
     console.log(id);
     const chats = await chat.findById(id);
     if (chats) {
       chats.messages.push({
         sender: senderId,
         message: message,
-        name,
+        name,profile,
       
       });
       chats.total_messages= chats.total_messages + 1,
@@ -29,6 +29,7 @@ const postchat = async (req, res) => {
         sender: senderId,
         message: message,
         name,
+        profile,
      
       });
       console.log(chats);
@@ -67,14 +68,26 @@ const getChatGroup = async (req, res) => {
       const {id} = req.body;
       const chats = await chat.findById(id);
       if (chats) {
-        res.status(200).send(chats);
-      
+        // console.log(chats.members[0])
+        // console.log(chats.members[1]);
+        // // return
+        // const sender = chats.members[0];
+        // const senderUser = await userProfiles.findById(sender);
+        // console.log(senderUser)
+        // const reciver = chats.members[1];
+        // const reciverUser = await userProfiles.findById(reciver);
+        // console.log(reciverUser)
+        // const allChats = {
+        //   chats:chats,
+        //   reciverUser: {image:reciverUser.image},
+        //   senderUser:senderUser.image
+        // }
+        res.status(200).json(chats);
+        // res.status(200).json(reciverUser);
+        // res.status(200).json(senderUser);
       } else {
-        
         res.status(400).send({error:"no chat found"});
-
       }
-      
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: err });

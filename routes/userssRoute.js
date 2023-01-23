@@ -17,6 +17,7 @@ router.post("/viewRequest", UserController.viewRequest);
 router.post("/sentRequest", UserController.sentRequest);
 router.post("/nearBy", UserController.nearBy);
 router.post("/viewAllRequest", UserController.viewAllRequest);
+router.post("/viewAcceptRequest", UserController.viewAcceptRequest);
 router.get('/latest/:id',UserController.latest),
 
 router.post("/search", UserController.search);
@@ -25,5 +26,7 @@ router.post("/getChatGroup", chat.getChatGroup);
 router.post("/postchat", chat.postchat);
 router.post("/getAlluserChat", chat.getAlluserChat);
 
+router.get("/getrequest",UserController.getRequest)
+router.delete("/deletereqest/:id", UserController.deleteRequest);
 
 module.exports = router; // export to use in server.js

@@ -11,3 +11,13 @@ const PackageSchema = new mongoose.Schema({
 });
 var Package = mongoose.model('Package', PackageSchema);
 module.exports.Package = Package;
+
+
+const PromotionSchema = new mongoose.Schema({
+    name: {type: String},
+    description:{type:String},
+    promotionShow:{type:Boolean,default:false},
+
+})
+var Promotion = mongoose.model('Promotion', PromotionSchema);
+module.exports.Promotion = Promotion;

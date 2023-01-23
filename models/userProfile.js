@@ -37,14 +37,14 @@ var userProfileSchema = mongoose.Schema({
     type: String,
     default: "N/A",
   },
-
   sect: {
     type: String,
     default: "N/A",
   },
   caste: String,
   resetToken: String,
-  active: Boolean,
+  active: {type:Boolean,default:true},
+  deleteRequest:{type:Boolean,default:true},
   phoneactive: Boolean,
   password: String,
   religiousStatus: String,
@@ -64,6 +64,7 @@ var userProfileSchema = mongoose.Schema({
   city: {
     type: String,
     default: "N/A",
+    // required: tr ue,
   },
   house: String,
   nationality: String,

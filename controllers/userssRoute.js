@@ -9,13 +9,16 @@ const router = express.Router();
 const OnlineUser = async (req, res) => {
   const { Gender } = req.body;
   try {
-    if (Gender === "Male") {
-      const user = await userProfiles.find({ gender: "Female" });
+    // if (Gender === "Male") {
+    const user = await userProfiles.find();
+
+    //   const user = await userProfiles.find({ gender: "Female"});
+      // console.log(user);
+      // return res.status(200).send(user);
+    // } else {
+    //   const user = await userProfiles.find({ gender: "Male" });
       return res.status(200).send(user);
-    } else {
-      const user = await userProfiles.find({ gender: "Male" });
-      return res.status(200).send(user);
-    }
+    // }
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -24,7 +27,7 @@ const nearBy = async (req, res) => {
   const { city } = req.body;
 
   try {
-    const user = await userProfiles.find({ city: city });
+    const user = await userProfiles.find({ city: city});
     return res.status(200).send(user);
   } catch (error) {
     return res.status(400).json({ error });
@@ -60,7 +63,7 @@ const sentRequest = async (req, res) => {
         await user.save();
       return res.status(200).send(user);
     } else if (request == "cancel") {
-      let user = await userRequest.findOneAndUpdate(
+      const user = await userRequest.findOneAndUpdate(
         { sid: rid, rid: id },
         { requests: "cancel" }
       );
@@ -77,6 +80,28 @@ const sentRequest = async (req, res) => {
     return res.status(400).json({ error });
   }
 };
+const getRequest = async (req,res)=>{
+  const { rid } = req.body;
+  try {
+    let user = await userRequest.find();
+    console.log(user);
+
+    return res.status(200).send(user);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+}
+const deleteRequest = async (req,res)=>{
+  const id  = req.params.id;
+  try {
+    let user = await userRequest.findByIdAndDelete(id);
+    console.log(user);
+
+    return res.status(200).send(user);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+}
 const viewRequest = async (req, res) => {
   const { uid, id, rid } = req.body;
   try {
@@ -95,7 +120,28 @@ const viewAllRequest = async (req, res) => {
   try {
     let user = await userRequest.find({
       rid: rid,
+      requests: "pending",
+      // requests: "accept",
+
     });
+    console.log(user);
+
+    const ids = user.map((val) => val.sid);
+    let users = await userProfiles.find({ _id: { $in: ids } });
+    return res.status(200).send(users);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+};
+const viewAcceptRequest = async (req, res) => {
+  const { rid } = req.body;
+  try {
+    let user = await userRequest.find({
+      rid: rid,
+      requests: "accept"
+    });
+    console.log(user);
+
     const ids = user.map((val) => val.sid);
     let users = await userProfiles.find({ _id: { $in: ids } });
     return res.status(200).send(users);
@@ -205,9 +251,10 @@ module.exports = {
   addToFav,latest,
   sentRequest,
   viewRequest,
+  deleteRequest,getRequest,
   viewFav,
   nearBy,
   findMatch,
-  viewAllRequest,
+  viewAllRequest,viewAcceptRequest,
   search,
 };

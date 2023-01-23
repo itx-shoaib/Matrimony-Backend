@@ -13,12 +13,12 @@ app.use(bodyparser.json());
 
 const userRouter = require('./routes/userRoute')
 const AdminRouter = require('./routes/adminRoute')
-
+const subAdmin = require('./routes/subAdmin')
 const users = require('./routes/userssRoute')
 app.use('/api/user', userRouter)
 app.use('/api/users', users)
 app.use("/api/admin", AdminRouter)
-
+app.use("/api/subAdmin",subAdmin)
 
 const port = process.env.PORT || 5000;
 

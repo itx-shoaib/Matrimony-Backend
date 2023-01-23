@@ -17,15 +17,16 @@ router.post("/changeLoginStatus", UserController.changeLoginStatus)
 router.post("/showBlockedUsers", UserController.showBlockedUsers)
 router.post("/unblockUser", UserController.unblockUser)
 router.post("/payment", UserController.payment)
-router.post("/imageUpload/:id", upload.array("images",10), UserController.uploadAllImage);
+// router.post("/imageUpload/:id", upload.array('images',10),UserController.uploadAllImage);
+router.post("/imageUpload/:id", UserController.uploadAllImage);
 router.post("/changeAllSttaus",  UserController.changeAllSttaus);
 router.post("/changeSingleImageStatus", UserController.changeSingleImageStatus);
 router.post("/uploadProfileImage", UserController.changeSingleImageStatus);
 router.post("/ProfileImage/:id", upload.single('image'),UserController.uploadProfileImage);
 router.post("/upload", upload.single("image"),UserController.uploadProfileImage);
 router.get("/showImages/:id",UserController.showAllImages);
-
-// router.delete("/deleteGallary/:id",UserController.deleteGallary);
+router.post("/lockGallery", UserController.lockGallery);
+router.delete("/deleteGallary/:id",UserController.deleteGallary);
 
 router.post("/showPublicImages",UserController.showPublicImages);
 router.post("/showOverallPublicImages",UserController.showOverallPublicImages);
