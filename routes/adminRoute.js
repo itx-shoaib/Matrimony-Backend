@@ -19,6 +19,9 @@ router.get("/getAllReports", AdminController.getAllReports);
 router.post('/promotionAdd',AdminController.promotionAdd);
 router.get('/promotionget',AdminController.promotionget);
 router.delete('/deletePromotion/:id',AdminController.deletePromotion);
+router.get('/getPromotionById/:id', AdminController.getPromotionById);
+router.post('/promotionUpdate/:id',AdminController.updatePromotion);
+
 router.get('/deleteAllReports', AdminController.deleteAllReports);
 // 4.
 module.exports = router; // export to use in server.js

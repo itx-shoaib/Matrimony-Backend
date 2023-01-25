@@ -80,7 +80,7 @@ const getPackageById = async (req, res, next) => {
     try {
         const id = req.params.id;
         let package = await Package.findById(id);
-        if (!user) {
+        if (!package) {
             console.log("Package not find")
         }
         let datatosent = {
@@ -125,9 +125,11 @@ const Profilelogin = async (req, res, next) => {
         if (!user) {
             return res.status(401).send({error: "Invalid email or password"});
         }
-        console.log(user.active);
         if(user.active == false){
             return res.status(401).send({error:"You Account Disable Please Contact Admin."});
+        }
+        if(user.requestToDelete == false){
+            return res.status(401).send({error:"You'r Account Deleted"});
         }
         // Generate JWT token
         // const token = jwt.sign({ _id: user._id }, "jwtPrivateKey");
@@ -339,19 +341,13 @@ const uploadAllImage = async (req, res, next) => {
         const userId = req.params.id;
         const allfiles = req.body.image;
         console.log(userId);
-        await gallery.findOneAndUpdate({userId: userId}, {$push: {image: allfiles}}, {new: true})
-            .then(doc => {
-                console.log(doc);
-                if (!doc) {
-                    res.status(404).json({message: "No document found with the specified criteria"});
-                } else {
-                    res.json(doc);
-                }
+        gallery.findOneAndUpdate({userId: userId}, {$push: {image: allfiles}}, {upsert: true, new: true})
+            .then((result) => {
+                res.json(result);
             })
-            .catch(error => {
+            .catch((error) => {
                 res.status(500).json({error: error.message});
             });
-
     } catch (error) {
         await res.status(500).json({error: error.message});
     }
@@ -545,6 +541,21 @@ const connectsDecrement = async (req, res) => {
     //   return res.send(e);
     // }
 };
+const updatePackage = async (req,res)=>{
+    const body = req.body;
+    // update.name = body.name;
+    // update.price = body.price;
+    // update.description = body.description;
+    // update.image = body.image;
+     Package.findByIdAndUpdate(req.params.id,body,
+        (err, data) => {
+            if (!err) {
+                res.send(data);
+            } else {
+                return next(err);
+            }
+        })
+};
 module.exports = {
     createProfile,
     otpVerification,
@@ -565,7 +576,7 @@ module.exports = {
     unblockUser,
     payment,
     uploadProfileImage,
-    addToPackage, getPackage, assignPackageToUser, deletePackage, getPackageById,
+    addToPackage, getPackage, assignPackageToUser, deletePackage, getPackageById,updatePackage,
     connectsDecrement,
     deleteGallary,lockGallery
     // ,

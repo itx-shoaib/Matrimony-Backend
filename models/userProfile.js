@@ -9,6 +9,7 @@ var userProfileSchema = mongoose.Schema({
   image:{
     type:String,
   },
+  requestToDelete: {type:Boolean,default:true},
   connect:Number,
   package:String,
   personalContact: String,

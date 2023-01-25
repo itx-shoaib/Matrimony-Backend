@@ -162,6 +162,34 @@ const deletePromotion = async (req, res) => {
         })
     }
 }
+const updatePromotion = async (req,res)=>{
+    const body = req.body;
+    Promotion.findByIdAndUpdate(req.params.id,body,
+        (err, data) => {
+            if (!err) {
+                res.send(data);
+            } else {
+                return next(err);
+            }
+        })
+};
+const getPromotionById = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        let promotion = await Promotion.findById(id);
+        if (!promotion) {
+            console.log("Promotion not find")
+        }
+        let datatosent = {
+            message: "Promotion list",
+            promotion,
+        };
+        return res.send(promotion);
+        console.log(promotion);
+    } catch (e) {
+        console.log(e)
+    }
+};
 module.exports = {
     AllUser,
     DeleteUser,
@@ -169,5 +197,5 @@ module.exports = {
     ViewOnlineUsers,
     viewAllRequest,
     generateReport,getAllReports,deleteAllReports,
-    promotionAdd,promotionget,deletePromotion
+    promotionAdd,promotionget,deletePromotion,updatePromotion,getPromotionById,
 };

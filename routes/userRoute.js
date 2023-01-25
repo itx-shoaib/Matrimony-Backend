@@ -18,7 +18,7 @@ router.post("/showBlockedUsers", UserController.showBlockedUsers)
 router.post("/unblockUser", UserController.unblockUser)
 router.post("/payment", UserController.payment)
 // router.post("/imageUpload/:id", upload.array('images',10),UserController.uploadAllImage);
-router.post("/imageUpload/:id", UserController.uploadAllImage);
+router.put("/imageUpload/:id", UserController.uploadAllImage);
 router.post("/changeAllSttaus",  UserController.changeAllSttaus);
 router.post("/changeSingleImageStatus", UserController.changeSingleImageStatus);
 router.post("/uploadProfileImage", UserController.changeSingleImageStatus);
@@ -38,6 +38,7 @@ router.post('/addToPackage', UserController.addToPackage);
 router.get('/getPackage', UserController.getPackage);
 router.delete('/deletePackage/:id',UserController.deletePackage);
 router.get('/getPackageById/:id', UserController.getPackageById);
+router.post('/packageUpdate/:id',UserController.updatePackage);
 
 
 router.get('/getAllProfile', UserController.getallUsers);

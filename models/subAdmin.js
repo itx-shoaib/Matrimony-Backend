@@ -6,11 +6,11 @@ var subAdminSchema = mongoose.Schema({
     password:String,
     userName:String,
     edit: {type:Boolean,default: false},
-    view: {type:Boolean,default:false},
-    active: {type:Boolean,default:true,}
+    view: {type:Boolean,default:true},
+    status: {type:Boolean,default:false,}
 });
 
 var subAdmin = mongoose.model("subAdmin", subAdminSchema);
-module.exports.subAdmins = subAdmin;
+module.exports.subAdmin = subAdmin;
 //for sign up
 // module.exports.validateUserLogin = validateUserLogin; // for login
