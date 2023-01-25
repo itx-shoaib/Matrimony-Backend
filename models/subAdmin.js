@@ -4,10 +4,11 @@ var bcrypt = require("bcrypt");
 var subAdminSchema = mongoose.Schema({
     name:String,
     password:String,
-    userName:String,
+    userName: {type:String,unique:true},
     edit: {type:Boolean,default: false},
     view: {type:Boolean,default:true},
-    status: {type:Boolean,default:false,}
+    status: {type:Boolean,default:false,},
+    role:{type:String,default:'admin'},
 });
 
 var subAdmin = mongoose.model("subAdmin", subAdminSchema);

@@ -15,6 +15,7 @@ const subAdminCreate = async (req,res)=>{
         admin.password = req.body.password;
         admin.edit = req.body.edit;
         admin.status = req.body.status;
+        admin.role = "admin";
         admin.view = true;
         admin.save().then((doc,err)=>{
             if(!err){
@@ -78,7 +79,7 @@ const subAdminUpdate = async (req,res)=>{
             if (!err) {
                 res.send(data);
             } else {
-                return next(err);
+                return (err);
             }
         })
 };
@@ -113,6 +114,23 @@ const subAdminGetByID= async (req, res, next) => {
         console.log(e)
     }
 };
+const subAdminGetByName= async (req, res, next) => {
+    try {
+        console.log(req.params);
+        const userName = req.params.id;
+        let admin = await subAdmin.findOne({userName:userName});
+        if (!admin) {
+            console.log("admin not find")
+        }
+        let datatosent = {
+            message: "admin list",
+            admin,
+        };
+        return res.send(admin);
+    } catch (e) {
+        console.log(e)
+    }
+};
 module.exports = {
     subAdminCreate,
     subAdminLogin,
@@ -120,4 +138,5 @@ module.exports = {
     subAdminUpdate,
     subAdminDelete,
     subAdminGetByID,
+    subAdminGetByName,
 }
