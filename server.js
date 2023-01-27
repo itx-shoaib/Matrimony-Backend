@@ -25,6 +25,7 @@ const build = require('./routes/buildRoute')
 const house = require('./routes/house.route')
 const country = require('./routes/countryRoute')
 const provinvces = require('./routes/provinvcesRoute')
+const notification = require('./routes/notification');
 
 app.use('/api/user', userRouter)
 app.use('/api/users', users)
@@ -40,6 +41,7 @@ app.use("/api",build)
 app.use("/api",house)
 app.use("/api",country)
 app.use("/api",provinvces)
+app.use("/api",notification)
 
 const port = process.env.PORT || 5000;
 
