@@ -44,7 +44,7 @@ router.post('/packageUpdate/:id',UserController.updatePackage);
 router.get('/getAllProfile', UserController.getallUsers);
 router.put('/updateProfile/:id', UserController.userUpdate);
 router.post('/connectsDecrement/:id',UserController.connectsDecrement);
-
+router.post("/deleteGalleryImage/:id", UserController.deleteGalleryImage);
 
 
 

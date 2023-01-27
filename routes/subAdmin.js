@@ -8,7 +8,7 @@ router.post('/subAdminCreate',subAdminController.subAdminCreate);
 router.get('/showSubAdmin',subAdminController.subAdminShow);
 router.put('/updatesubAdmin/:id',subAdminController.subAdminUpdate);
 router.get('/subAdminById/:id',subAdminController.subAdminGetByID);
-router.get('/subAdminByName/:id',subAdminController.subAdminGetByName);
+router.post('/subAdminByName/:id',subAdminController.subAdminGetByName);
 
 router.delete('/deleteSubAdmin/:id',subAdminController.subAdminDelete);
 module.exports = router;

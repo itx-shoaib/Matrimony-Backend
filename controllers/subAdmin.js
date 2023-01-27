@@ -105,6 +105,7 @@ const subAdminGetByID= async (req, res, next) => {
         if (!admin) {
             console.log("admin not find")
         }
+
         let datatosent = {
             message: "admin list",
             admin,
@@ -117,16 +118,20 @@ const subAdminGetByID= async (req, res, next) => {
 const subAdminGetByName= async (req, res, next) => {
     try {
         console.log(req.params);
+        console.log(req.body.password);
         const userName = req.params.id;
         let admin = await subAdmin.findOne({userName:userName});
+    console.log(admin);
         if (!admin) {
             console.log("admin not find")
         }
-        let datatosent = {
-            message: "admin list",
-            admin,
-        };
-        return res.send(admin);
+        if(admin.password != req.body.password){
+            admin = false;
+        }
+        if(admin.status == false){
+            admin = null;
+        }
+        return res. send(admin);
     } catch (e) {
         console.log(e)
     }

@@ -336,22 +336,7 @@ const uploadProfileImage = async (req, res, next) => {
         return res.send(e);
     }
 };
-const uploadAllImage = async (req, res, next) => {
-    try {
-        const userId = req.params.id;
-        const allfiles = req.body.image;
-        console.log(userId);
-        gallery.findOneAndUpdate({userId: userId}, {$push: {image: allfiles}}, {upsert: true, new: true})
-            .then((result) => {
-                res.json(result);
-            })
-            .catch((error) => {
-                res.status(500).json({error: error.message});
-            });
-    } catch (error) {
-        await res.status(500).json({error: error.message});
-    }
-};
+
 const showAllImages = async (req, res, next) => {
     try {
         const userId = req.params.id;
@@ -556,6 +541,42 @@ const updatePackage = async (req,res)=>{
             }
         })
 };
+const uploadAllImage = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const allfiles = req.body;
+        console.log(userId);
+        // return ;
+        gallery.findOneAndUpdate({userId: userId}, {$push: {image: allfiles}}, {upsert: true, new: true})
+            .then((result) => {
+                res.json(result);
+            })
+            .catch((error) => {
+                res.status(500).json({error: error.message});
+            });
+    } catch (error) {
+        await res.status(500).json({error: error.message});
+    }
+};
+
+const deleteGalleryImage = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const key = req.body.id;
+        console.log(key);
+        gallery.findByIdAndUpdate(id, {$pull: {image: {id: key}}}, {new: true})
+            .then((result) => {
+                res.json(result);
+            })
+            .catch((error) => {
+                res.status(500).json({error: error.message});
+            });
+    } catch
+        (error) {
+        console.log("error with catch")
+        await res.status(500).json({error: error.message});
+    }
+}
 module.exports = {
     createProfile,
     otpVerification,
@@ -578,6 +599,6 @@ module.exports = {
     uploadProfileImage,
     addToPackage, getPackage, assignPackageToUser, deletePackage, getPackageById,updatePackage,
     connectsDecrement,
-    deleteGallary,lockGallery
-    // ,
+    deleteGallary,lockGallery,
+    deleteGalleryImage,
 };
